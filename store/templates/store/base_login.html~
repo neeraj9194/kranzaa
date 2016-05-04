@@ -1,0 +1,149 @@
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>krANzaa Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel = "icon" type = "icon" href = "{% static 'images/icon.jpg' %}"></link>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/helper.css' %}"></link>
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">-->
+    <!--custom JS
+    <script src="{% static 'custom.js' %}"></script>
+    -->
+    <style>
+      @font-face {
+      font-family: Orange;
+      src: url("{% static 'fonts/orange.ttf' %}");
+      font-weight:900;
+      }
+      body
+      {
+      /*background:#fafaf9;*/
+      background:#72ba72;
+      }
+      #left-side
+      {
+      float: left;
+      width: 200px;
+      }
+      .mid-area{
+      color:white;
+      text-align:center;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <!--Page Header-->
+    <nav class="navbar navbar-default topbar" style="background-color: rgba(1, 165, 136,0.9); border-color:rgba(1, 165, 136,0.9);" id = "web-top">
+
+      <div class="container-fluid fixed-navbar navbar-fixed-top" style="background-color: rgba(1, 165, 136,0.9); border-color:rgba(1, 165, 136,0.9);">
+	<div class="navbar-header" id = "icon-top">
+	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span> 
+	  </button>
+	  <a class="navbar-brand" href="#about" style = "color: black">krANzaa</a>
+	</div>
+	
+	{% block userarea %}
+
+	<div class="collapse navbar-collapse" id="myNavbar">
+	  <ul class="nav navbar-nav navbar-right navbar-login" id = "ul-top">
+	    <li><a href = "/login/" target = "_self"><span class = "label label-primary" style = "font-size: 20px; ">Sign Up</span></a>
+	    </li>
+	    <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class = "label label-primary" style = "font-size: 20px;">Login</span></a>
+	      <ul id="login-dp" class="dropdown-menu">
+		<li>
+		  <div class="row">
+		    <div class="col-md-12 col-md-12 col-xs-12">
+		      Login via
+		      <div class="social-buttons">
+			<a href="https://www.facebook.com/login/" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+			<a href="https://twitter.com/login" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+		      </div>
+		      {% block logindropdown %}
+		      <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+			<div class="form-group">
+			  <label class="sr-only" for="exampleInputEmail2">Email address</label>
+			  <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+			</div>
+			<div class="form-group">
+			  <label class="sr-only" for="exampleInputPassword2">Password</label>
+			  <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+			  <div class="help-block text-right"><a href="forgot_pass.html" target = "_blank">Forget the password ?</a></div>
+			</div>
+			<div class="form-group">
+			  <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+			</div>
+			<div class="checkbox">
+			  <label>
+			    <input type="checkbox"> Keep me logged-in </input>
+			  </label>
+			</div>
+		      </form>
+		      {% endblock %}
+		    </div>
+		  </div>
+		</li>
+	      </ul>
+	    </li>
+	  </ul>
+	</div>
+
+{% endblock %}
+      </div>
+<!--
+      <div class="container-fluid">
+	<div class="row">
+	  <div class="col-sm-2"></div>
+	  <div class="col-sm-8">
+	    <form role="form" class="form-inline search-form">
+
+	      <div class="form-grou">
+		<div class="row">
+		  <div class="col-sm-2" style="padding:0px 0px;">
+		    <select class="form-control" id = "cities" onChange = "changeImage()" style="float: right;">
+		      <option value = "images/delhi.jpg">Delhi NCR</option>
+		      <option value = "images/mumbai.jpg">Mumbai</option>
+		    </select>
+		  </div>
+		  <div class="col-sm-8" style="padding:0px 0px;">
+		    <input type="text" class="form-control" name = "search" placeholder="Stores near you..." style=" height:50px; width:100%;"></input>
+		  </div>
+		  <div class="col-sm-2" style="padding:0px 0px;">
+		    <button type="submit" class="btn btn-default">Go</button>
+		  </div>
+		</div>
+	      </div>
+	    </form>
+	  </div>
+	  <div class="col-sm-2"></div>
+	</div>
+      </div>
+-->
+
+
+    </nav>
+    <!--Join Options-->
+    <div class="container-fluid">
+      <div class="row">
+	<div class="col-sm-2"></div>
+	{% block storearea %}
+	<div class="col-sm-8 mid-area">
+	  <h2 style="color:black;">Hello, GUEST</h2>
+	</div>
+	{% endblock %}
+	<div class="col-sm-2"></div>
+      </div>
+    </div>
+  </body>
+</html>

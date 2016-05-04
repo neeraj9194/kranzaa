@@ -1,0 +1,14 @@
+from django.db import models
+from store.models import RegStore
+# Create your models here.
+
+class Review(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    store = models.ForeignKey(RegStore,unique_for_date=created)
+    pos_score=models.DecimalField(max_digits=6, decimal_places=4)
+    neg_score=models.DecimalField(max_digits=6, decimal_places=4)
+    polarity=models.DecimalField(max_digits=6, decimal_places=4)
+    no_of_comments=models.IntegerField()
+
+    def __str__(self):
+        return str(self.created)

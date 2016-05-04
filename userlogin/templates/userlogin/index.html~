@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+
+{% if request.user.is_authenticated %}
+
+{% block loginform %}
+<h2 style="color:white;">Welcome {{ request.user.username }}</h2>
+
+
+{% endblock %}
+
+
+{% block logindropdown %}
+
+<div id="logindrop" class="tab-pane fade active in">      
+  <form action="/login/" method="post" class="form-horizontal" role="form">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field.errors }}
+      {% render_field field  class="form-control"  %}
+    </div>
+    {% endfor %}
+    <button type="submit" name="login" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
+{% endblock %}
+
+{% endif %}
+
+
+{% block userarea %}
+
+{% if request.user.is_authenticated %}
+
+<div class="collapse navbar-collapse" id="myNavbar">
+  <ul class="nav navbar-nav navbar-right navbar-login" id = "ul-top">
+    <li class="user-btn">
+      <a href="/" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-user"></span> {{ request.user.username }} 
+      </a>
+    </li>
+    <li class="user-btn">
+      <a href="/logout" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-log-out"></span> 
+      </a>
+    </li>
+  </ul>
+</div>
+
+{% else %}
+
+{{ block.super }} 
+
+{% endif %}
+
+{% endblock %}

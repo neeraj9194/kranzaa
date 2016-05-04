@@ -1,0 +1,58 @@
+{% extends 'store/base_login.html' %}
+hello stores
+
+{% block storearea %}
+<div class="col-sm-8"> 
+  {% for store in stores %}
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+	<div class="col-sm-4">
+	  <img style="width:230px;height:180px;" src="/{{store.main_pic}}">
+	</div>
+	<div class="col-sm-8">
+	  <h2><a href="/store/{{store.storeslug}}">{{store.name}}</a></h2>
+	  <div class="store_meta">
+	    <h5><a href="category/{{store.category.slug}}">{{store.category}}</a></h5>
+	    <p>{{store.address}}</p>
+	  </div>
+	</div>
+      </div>
+      <hr>
+      <div class="store_body">
+	<p>{{store.desc|safe|linebreaks|truncatewords:"20"}}</p>
+	<a href="/post/{{store.storeslug}}">Know more</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}
+
+
+{% block userarea %}
+
+{% if request.user.is_authenticated %}
+
+<div class="collapse navbar-collapse" id="myNavbar">
+  <ul class="nav navbar-nav navbar-right navbar-login" id = "ul-top">
+    <li class="user-btn">
+      <a href="/" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-user"></span> {{ request.user.username }} 
+      </a>
+    </li>
+    <li class="user-btn">
+      <a href="/logout" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-log-out"></span> 
+      </a>
+    </li>
+  </ul>
+</div>
+
+{% else %}
+
+{{ block.super }} 
+
+{% endif %}
+
+{% endblock %}

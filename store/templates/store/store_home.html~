@@ -1,0 +1,91 @@
+{% extends 'store/base_login.html' %}
+
+{% load widget_tweaks %}
+
+{% block storearea %}
+<div class="col-sm-8"> 
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+	<div class="col-sm-4">
+	  <img style="width:230px;height:180px;" src="/{{store.main_pic}}">
+	</div>
+	<div class="col-sm-8">
+	  <h2><a href="/store/{{store.storeslug}}">{{store.name}}</a></h2>
+	  <div class="store_meta">
+	    <h5><a href="category/{{store.category.slug}}">{{store.category}}</a></h5>
+	    <p>{{store.address}}</p>
+	    <p>Owner: {{store.owner}}</p>
+	    <p>Contact: {{store.phone_number}}</p>
+	  </div>
+	</div>
+      </div>
+      <hr>
+      <div class="store_body">
+	<p>{{store.desc|safe|linebreaks}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="write_review">
+    
+    <div class="container-fluid" style="background-color:rgba(255,255,255,0);">
+      
+      <div class="well">
+	
+	<form role="form" action="" method="post">
+	  {% for field in form %}
+	  <div class="form-group">
+	    <label for="{{field.name}}">{{field.label}}</label>
+	    {% csrf_token %}
+	    {{ field.errors }}
+	    <div class="field {{ field|field_type }} {{ field|widget_type }} {{ field.html_name }}">
+	      {{ field|add_class:"form-control" }}
+	    </div>
+	  </div>
+	  {% endfor %}
+	  <input type="submit" class="btn btn-default" value="Post Comment" />
+	</form>
+
+      </div>
+    </div>
+  </div>
+
+  {% for comment in comments %}
+  <div class="well">
+    <div class="comment">
+        <div class="user"><h4> <b><i>By:-)  {{ comment.user }}</i></b></h4></div>
+        <div class="comment_body" style="font-size:18px;">{{ comment.comment|linebreaks }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
+
+
+{% block userarea %}
+
+{% if request.user.is_authenticated %}
+
+<div class="collapse navbar-collapse" id="myNavbar">
+  <ul class="nav navbar-nav navbar-right navbar-login" id = "ul-top">
+    <li class="user-btn">
+      <a href="/" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-user"></span> {{ request.user.username }} 
+      </a>
+    </li>
+    <li class="user-btn">
+      <a href="/logout" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-log-out"></span> 
+      </a>
+    </li>
+  </ul>
+</div>
+
+{% else %}
+
+{{ block.super }} 
+
+{% endif %}
+
+{% endblock %}

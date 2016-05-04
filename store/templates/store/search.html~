@@ -1,0 +1,93 @@
+{% extends 'store/base_login.html' %}
+
+{% block storearea %}
+
+<div class="col-sm-8"> 
+  {% for store in store %}
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+	<div class="col-sm-4">
+	  <img style="width:230px;height:180px;" src="/{{store.main_pic}}">
+	</div>
+	<div class="col-sm-8">
+	  <h2><a href="/store/{{store.storeslug}}">{{store.name}}</a></h2>
+	  <div class="store_meta">
+	    {% for cat in store.category.all %}
+	    <a style="text-decoration:none;" href="category/{{cat.slug}}"><button type="button" class="btn btn-success">{{cat}}</button></a>
+	    {% endfor %}
+	    <div style="margin-top:40px;">
+	      <h3>Address:</h3> 
+	      <p>{{store.address}}</p>
+	    </div>
+	  </div>
+	</div>
+      </div>
+      <hr>
+      <div class="store_body">
+	<p>{{store.desc|safe|linebreaks|truncatewords:"20"}}</p>
+	<a href="/post/{{store.storeslug}}">Know more</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+  {% for store in store_desc %}
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+	<div class="col-sm-4">
+	  <img style="width:230px;height:180px;" src="/{{store.main_pic}}">
+	</div>
+	<div class="col-sm-8">
+	  <h2><a href="/store/{{store.storeslug}}">{{store.name}}</a></h2>
+	  <div class="store_meta">
+	    {% for cat in store.category.all %}
+	    <a style="text-decoration:none;" href="category/{{cat.slug}}"><button type="button" class="btn btn-success">{{cat}}</button></a>
+	    {% endfor %}
+	    <div style="margin-top:40px;">
+	      <h3>Address:</h3> 
+	      <p>{{store.address}}</p>
+	    </div>
+	  </div>
+	</div>
+      </div>
+      <hr>
+      <div class="store_body">
+	<p>{{store.desc|safe|linebreaks|truncatewords:"20"}}</p>
+	<a href="/post/{{store.storeslug}}">Know more</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+  {% for store in store_address %}
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+	<div class="col-sm-4">
+	  <img style="width:230px;height:180px;" src="/{{store.main_pic}}">
+	</div>
+	<div class="col-sm-8">
+	  <h2><a href="/store/{{store.storeslug}}">{{store.name}}</a></h2>
+	  <div class="store_meta">
+	    {% for cat in store.category.all %}
+	    <a style="text-decoration:none;" href="category/{{cat.slug}}"><button type="button" class="btn btn-success">{{cat}}</button></a>
+	    {% endfor %}
+	    <div style="margin-top:40px;">
+	      <h3>Address:</h3> 
+	      <p>{{store.address}}</p>
+	    </div>
+	  </div>
+	</div>
+      </div>
+      <hr>
+      <div class="store_body">
+	<p>{{store.desc|safe|linebreaks|truncatewords:"20"}}</p>
+	<a href="/post/{{store.storeslug}}">Know more</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

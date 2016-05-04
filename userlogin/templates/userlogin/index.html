@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+
+{% if request.user.is_authenticated %}
+
+{% block logindropdown %}
+
+<div id="logindrop" class="tab-pane fade active in">      
+  <form action="/login/" method="post" class="form-horizontal" role="form">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field.errors }}
+      {% render_field field  class="form-control"  %}
+    </div>
+    {% endfor %}
+    <button type="submit" name="login" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
+{% endblock %}
+
+{% endif %}
+
+
+{% block userarea %}
+
+{% if request.user.is_authenticated %}
+
+<div class="collapse navbar-collapse" id="myNavbar">
+  <ul class="nav navbar-nav navbar-right navbar-login" id = "ul-top">
+    <li class="user-btn">
+      <a href="/" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-user"></span> {{ request.user.username }} 
+      </a>
+    </li>
+    <li class="user-btn">
+      <a href="/logout" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-log-out"></span> 
+      </a>
+    </li>
+  </ul>
+</div>
+
+{% else %}
+
+{{ block.super }} 
+
+{% endif %}
+
+{% endblock %}
+
+{% block loginform %}
+<div class = "col-md-10 col-sm-10" id = "center-content">
+  <div class = "container-fluid">
+    <!--<div class ="jumbotron">
+	<h2>Deals of the day</h2>
+    </div>-->
+    <div class="daily-deal">
+      <img class="img-rounded img-responsive" src="{% static 'images/daily-deal.jpg' %}">
+    </div>
+    <div class="row">
+      <div class = "deal-box col-sm-3 col-md-3">
+	<a href="/store/gupta-sons">
+	  <div class="overlay">
+	    <div class="caption-head">Deal 50% off</div>
+	    <div class="caption-loc"><span class="flaticon"><img src="{% static 'images/location.png' %}"></span>Gupta & Sons,Kamla Nagar </div>
+	  </div>
+	</a>
+	<img class="img-responsive" src = "{% static 'images\\deal1.jpg' %}" alt = "Deal" title = "Clothes and apparals">
+
+      </div>
+      <div class = "deal-box col-sm-3 col-md-3">
+	<a href="/store/gupta-sons">
+	  <div class="overlay">
+	    <div class="caption-head">10% Off all Ladies Suits</div>
+	    <div class="caption-loc"><span class="flaticon"><img src="{% static 'images/location.png' %}"></span>Gupta & Sons,Kamla Nagar </div>
+	  </div>
+	</a>
+	<img class="img-responsive" src = "{% static 'images\\deal2.jpg' %}" alt="Deal"></img>
+      </div>
+      <div class = "deal-box col-sm-3 col-md-3">
+	<a href="/store/metro-shoes">
+	  <div class="overlay">
+	    <div class="caption-head"> 30% Off on All Shoes</div>
+	    <div class="caption-loc"><span class="flaticon"><img src="{% static 'images/location.png' %}"></span>Metro Shoes,Karol Bagh </div>
+	  </div>
+	</a>
+	<img class="img-responsive" src = "{% static 'images\\deal3.jpg' %}" alt = "Deal" title = "Furnitures"></img>
+      </div>
+      <div class = "deal-box col-sm-3 col-md-3">
+	<a href="/store/queens">
+	  <div class="overlay">
+	    <div class="caption-head">10% Off All Designer Bags</div>
+	    <div class="caption-loc"><span class="flaticon"><img src="{% static 'images/location.png' %}"></span>Queens,Kamla Nagar </div>
+	  </div>
+	</a>
+	<img class="img-responsive" src = "{% static 'images\\deal4.jpg' %}" alt = "Deal" title = "Login required to view these deals"></img>
+      </div>		
+    </div>
+    <div class="row">
+      <div class = "deal-box col-sm-3 col-md-3">
+	<a href="/store/meenabazzar">
+	  <div class="overlay">
+	    <div class="caption-head">Opening Of MeenaBazzar </div>
+	    <div class="caption-loc"><span class="flaticon"><img src="{% static 'images/location.png' %}"></span>Shop No.45, Jwalaheri,Paschim Vihar</div>
+	  </div>
+	</a>
+	<img class="img-responsive" src = "{% static 'images\\deal5.jpg' %}" alt = "Deal" title = "Newest openings near you"></img>
+      </div>
+      <div class = "deal-box col-sm-3 col-md-3">
+	<a href="/store/nike">
+	  <div class="overlay">
+	    <div class="caption-head">Deal 20% off</div>
+	    <div class="caption-loc"><span class="flaticon"><img src="{% static 'images/location.png' %}"></span>NIKE, Karol Bagh</div>
+	  </div>
+	</a>
+	<img class="img-responsive" src = "{% static 'images\\deal6.jpg' %}" alt = "Deal" title = "Surprises for everyone"></img>
+      </div>
+      <div class = "deal-box col-sm-3 col-md-3">
+	<a href="/store/shop-no-12">
+	  <div class="overlay">
+	    <div class="caption-head">Buy 2 get 1 Free Shirts</div>
+	    <div class="caption-loc"><span class="flaticon"><img src="{% static 'images/location.png' %}"></span>Shop no 12, Kamla Nagar </div>
+	  </div>
+	</a>
+	<img class="img-responsive" src = "{% static 'images\\deal7.jpg' %}" alt = "Deal" title = "Buy and sell. Pay your bill."></img>
+      </div>
+      <div class = "deal-box col-sm-3 col-md-3">
+	<a href="/store/the-hat-house">
+	  <div class="overlay">
+	    <div class="caption-head">Buy 1 get 1 Hats</div>
+	    <div class="caption-loc"><span class="flaticon"><img src="{% static 'images/location.png' %}"></span>The Hat House, Kamla Nagar </div>
+	  </div>
+	</a>
+	<img class="img-responsive" src = "{% static 'images\\deal8.jpg' %}" alt = "Deal"></img>
+      </div>
+      <br><br>
+    </div>
+  </div>
+</div>
+{% endblock %}

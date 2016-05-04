@@ -1,0 +1,132 @@
+{% extends "userlogin/base_login.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+
+<style>
+body
+{
+background-image: url({% static 'images/login10.jpg' %});
+}
+</style>
+{% 
+
+
+{% block loginform %}
+
+{% if active == True %}
+<script>
+  $(document).ready(function () {
+  $('.nav a[href="#register"]').tab('show');           
+  });
+</script>
+{% endif %}
+
+{% if status == True %}
+<script>
+  $(function(){
+  $(".alert").fadeOut(3000);
+  });
+</script>
+<div class="alert alert-success">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Congratulations!</strong> You Are registered with Kranzaa 
+</div>
+{% endif %}
+
+<style>
+
+.loginform{
+color: white;
+}
+.nav-tabs>li>a{
+background-color: whitesmoke;
+
+}
+</style>
+<div class="loginform container col-sm-4">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#register">Register</a></li>
+    <li><a data-toggle="tab" href="#login">Login</a></li>
+    
+  </ul>
+  <div class="tab-content">
+    <div id="register" class="tab-pane fade active in">
+      <h4>New User Register Here</h4>
+      <form action="/login/" method="post" class="form-horizontal" role="form">
+	{% csrf_token %}
+	{% for field in regform %}
+	<div class="form-group">
+	  {{ field.label_tag }}{{ field.errors }}
+	  {% render_field field  class="form-control"  %}
+	</div>
+	{% endfor %}
+	<button type="submit" name="register" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+    <div id="login" class="tab-pane fade">      
+      <form action="/login/" method="post" class="form-horizontal" role="form">
+	{% csrf_token %}
+	{% for field in form %}
+	<div class="form-group">
+	  {{ field.label_tag }}{{ field.errors }}
+	  {% render_field field  class="form-control"  %}
+	</div>
+	{% endfor %}
+	<button type="submit" name="login" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% if request.user.is_authenticated %}
+
+{% block logindropdown %}
+
+<div id="logindrop" class="tab-pane fade active in">      
+  <form action="/login/" method="post" class="form-horizontal" role="form">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}{{ field.errors }}
+      {% render_field field  class="form-control"  %}
+    </div>
+    {% endfor %}
+    <button type="submit" name="login" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
+{% endblock %}
+
+{% endif %}
+
+
+
+{% block userarea %}
+
+{% if request.user.is_authenticated %}
+
+<div class="collapse navbar-collapse" id="myNavbar">
+  <ul class="nav navbar-nav navbar-right navbar-login" id = "ul-top">
+    <li class="user-btn">
+      <a href="/" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-user"></span> {{ request.user.username }} 
+      </a>
+    </li>
+    <li class="user-btn">
+      <a href="/logout" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-log-out"></span> 
+      </a>
+    </li>
+  </ul>
+</div>
+
+{% else %}
+
+{{ block.super }} 
+
+{% endif %}
+
+{% endblock %}

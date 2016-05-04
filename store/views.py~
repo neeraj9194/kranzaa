@@ -1,0 +1,23 @@
+from django.shortcuts import get_object_or_404,render
+from .models import RegStore,Comments
+from .forms import CommentsForm
+
+# Create your views here.
+def store_view(request):
+    stores=RegStore.objects.all()
+    return render(request,'store/view_store.html',{'stores':stores})
+
+def store_home(request,slug):
+    store=get_object_or_404(RegStore,storeslug=slug)
+    comment_view=Comments.objects.filter(store__storeslug=slug)
+    if request.method=='POST':
+        form=CommentsForm(request.POST)
+        if form.is_valid():
+            save_it=form.save(commit=False)
+            save_it.store=store
+            save_it.user=request.user
+            save_it.save()
+    else:
+        form=CommentsForm()
+    
+    return render(request,'store/store_home.html',{'store':store,'comments':comment_view,'form':form})

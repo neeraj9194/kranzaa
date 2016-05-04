@@ -1,0 +1,64 @@
+from django.shortcuts import get_object_or_404,render
+from django.http import HttpResponse,HttpResponseRedirect
+from .forms import Login,UserForm
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
+
+# Create your views here.
+def login_view(request):
+    active=False
+    if request.method=='POST' and 'login' in request.POST:
+        form=Login(request.POST)
+        regform = UserForm()
+        if form.is_valid():
+            user = authenticate(username=request.POST['username'], password=request.POST['password'])
+            if user is not None:
+                # the password verified for the user
+                if user.is_active:
+                    #User is valid, active and authenticated
+                    status=True
+                    login(request,user)
+                    return HttpResponseRedirect('/')
+                    #return render(request,'userlogin/index.html')
+                else:
+                    print("The password is valid, but the account has been disabled!")
+            else:
+                status=False
+                return render(request,'userlogin/login.html',{'form':form,'regform':regform,'status':status})
+
+    elif request.method=='POST' and 'register' in request.POST:
+        active=True
+        regform = UserForm(request.POST)
+        form = Login()
+        if regform.is_valid():
+            instance = regform.save(commit=False)
+            #instance.email = Project.objects.get(title=offset)
+            instance.save()
+            status=True
+            regform = UserForm()
+            return render(request,'userlogin/login.html',{'form':form,'regform':regform,'status':status})
+            #return HttpResponse("You Registered successfully.")
+    else:
+        form = Login()
+        regform = UserForm()
+    return render(request,'userlogin/login.html',{'form':form,'regform':regform,'active':active})
+
+
+def base(request):
+    return render(request, 'userlogin/base.html')
+
+def index(request):
+    if request.user.is_authenticated():
+        print("user is activated")
+        return render(request, 'userlogin/index.html',)
+    else:
+        form = Login()
+        regform = UserForm()
+        return render(request, 'base.html',{'form':form,'regform':regform})
+
+def logout_view(request):
+    logout(request)
+    form = Login()
+    regform = UserForm()
+    return render(request, 'userlogin/login.html',{'form':form,'regform':regform})

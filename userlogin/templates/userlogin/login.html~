@@ -1,0 +1,70 @@
+{% extends "userlogin/base_login.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block loginform %}
+
+{% if active == True %}
+<script>
+  $(document).ready(function () {
+  $('.nav a[href="#register"]').tab('show');           
+  });
+</script>
+{% endif %}
+
+{% if status == True %}
+<script>
+  $(function(){
+  $(".alert").fadeOut(3000);
+  });
+</script>
+<div class="alert alert-success">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Congratulations!</strong> You Are registered with Kranzaa 
+</div>
+{% endif %}
+
+<style>
+.loginform{
+color: white;
+}
+.nav-tabs>li>a{
+background-color: whitesmoke;
+
+}
+</style>
+<div class="loginform container col-sm-4">
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
+    <li><a data-toggle="tab" href="#register">Register</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="login" class="tab-pane fade active in">      
+      <form action="/login/" method="post" class="form-horizontal" role="form">
+	{% csrf_token %}
+	{% for field in form %}
+	<div class="form-group">
+	  {{ field.label_tag }}{{ field.errors }}
+	  {% render_field field  class="form-control"  %}
+	</div>
+	{% endfor %}
+	<button type="submit" name="login" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+    <div id="register" class="tab-pane fade">
+      <h4>New User Register Here</h4>
+      <form action="/login/" method="post" class="form-horizontal" role="form">
+	{% csrf_token %}
+	{% for field in regform %}
+	<div class="form-group">
+	  {{ field.label_tag }}{{ field.errors }}
+	  {% render_field field  class="form-control"  %}
+	</div>
+	{% endfor %}
+	<button type="submit" name="register" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

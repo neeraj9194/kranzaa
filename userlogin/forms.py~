@@ -1,0 +1,38 @@
+from django import forms
+from django.forms import ModelForm
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password,check_password
+from django.contrib.auth.hashers import PBKDF2PasswordHasher,SHA1PasswordHasher
+
+class Login(forms.Form):
+    email=forms.EmailField(label='Email',max_length=100)
+    password = forms.CharField(label='Password', max_length=100, widget=forms.PasswordInput)
+            
+class UserForm(forms.ModelForm):
+    password = forms.CharField(max_length=100,widget=forms.PasswordInput())
+    repassword = forms.CharField(label='Re-Password', max_length=100,widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','username', 'email', 'password','repassword')
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("The Username Already Exists")
+        else:
+            return username
+
+    def clean_repassword(self):
+        password = self.data.get('password')
+        repassword = self.cleaned_data.get('repassword')
+        if password!=repassword:
+            raise forms.ValidationError("The password does not match")
+        return repassword
+        
+        
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if len(password) >= 8:
+            return make_password(password, salt=None, hasher='default')
+        else:
+            raise forms.ValidationError("The password shoul be min 8 char long")

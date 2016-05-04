@@ -1,0 +1,10 @@
+from django.contrib import admin
+from .models import Review
+# Register your models here.
+
+class ReviewAdmin(admin.ModelAdmin):
+    meta=Review
+    list_display=['store', "pos_score",'neg_score','polarity' ,'created']
+    readonly_fields=('store', "pos_score",'neg_score','polarity','no_of_comments')
+
+admin.site.register(Review,ReviewAdmin)

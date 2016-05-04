@@ -1,0 +1,1714 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO neeraj;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO neeraj;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO neeraj;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO neeraj;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO neeraj;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO neeraj;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO neeraj;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO neeraj;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO neeraj;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO neeraj;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO neeraj;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO neeraj;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO neeraj;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO neeraj;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO neeraj;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO neeraj;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO neeraj;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO neeraj;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO neeraj;
+
+--
+-- Name: product_product; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE product_product (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    price character varying(10) NOT NULL,
+    prod_id character varying(20) NOT NULL,
+    pic_id character varying(20) NOT NULL,
+    specification character varying(500) NOT NULL,
+    slug character varying(120) NOT NULL
+);
+
+
+ALTER TABLE public.product_product OWNER TO neeraj;
+
+--
+-- Name: product_product_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE product_product_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.product_product_id_seq OWNER TO neeraj;
+
+--
+-- Name: product_product_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE product_product_id_seq OWNED BY product_product.id;
+
+
+--
+-- Name: store_category; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE store_category (
+    id integer NOT NULL,
+    cat_title character varying(100) NOT NULL,
+    slug character varying(120) NOT NULL,
+    parent_category_id integer
+);
+
+
+ALTER TABLE public.store_category OWNER TO neeraj;
+
+--
+-- Name: store_category_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE store_category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_category_id_seq OWNER TO neeraj;
+
+--
+-- Name: store_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE store_category_id_seq OWNED BY store_category.id;
+
+
+--
+-- Name: store_comments; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE store_comments (
+    id integer NOT NULL,
+    comment text NOT NULL,
+    ratings integer NOT NULL,
+    user_id integer NOT NULL,
+    store_id integer NOT NULL,
+    created timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.store_comments OWNER TO neeraj;
+
+--
+-- Name: store_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE store_comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_comments_id_seq OWNER TO neeraj;
+
+--
+-- Name: store_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE store_comments_id_seq OWNED BY store_comments.id;
+
+
+--
+-- Name: store_location; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE store_location (
+    id integer NOT NULL,
+    loc_name character varying(70) NOT NULL,
+    point geometry(Point,4326) NOT NULL,
+    store_id integer NOT NULL
+);
+
+
+ALTER TABLE public.store_location OWNER TO neeraj;
+
+--
+-- Name: store_location_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE store_location_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_location_id_seq OWNER TO neeraj;
+
+--
+-- Name: store_location_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE store_location_id_seq OWNED BY store_location.id;
+
+
+--
+-- Name: store_regstore; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE store_regstore (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    "desc" text NOT NULL,
+    storeslug character varying(120) NOT NULL,
+    date_added timestamp with time zone NOT NULL,
+    address character varying(200) NOT NULL,
+    phone_number character varying(10) NOT NULL,
+    city character varying(20) NOT NULL,
+    main_pic character varying(100) NOT NULL,
+    owner character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.store_regstore OWNER TO neeraj;
+
+--
+-- Name: store_regstore_category; Type: TABLE; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE TABLE store_regstore_category (
+    id integer NOT NULL,
+    regstore_id integer NOT NULL,
+    category_id integer NOT NULL
+);
+
+
+ALTER TABLE public.store_regstore_category OWNER TO neeraj;
+
+--
+-- Name: store_regstore_category_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE store_regstore_category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_regstore_category_id_seq OWNER TO neeraj;
+
+--
+-- Name: store_regstore_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE store_regstore_category_id_seq OWNED BY store_regstore_category.id;
+
+
+--
+-- Name: store_regstore_id_seq; Type: SEQUENCE; Schema: public; Owner: neeraj
+--
+
+CREATE SEQUENCE store_regstore_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_regstore_id_seq OWNER TO neeraj;
+
+--
+-- Name: store_regstore_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neeraj
+--
+
+ALTER SEQUENCE store_regstore_id_seq OWNED BY store_regstore.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY product_product ALTER COLUMN id SET DEFAULT nextval('product_product_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_category ALTER COLUMN id SET DEFAULT nextval('store_category_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_comments ALTER COLUMN id SET DEFAULT nextval('store_comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_location ALTER COLUMN id SET DEFAULT nextval('store_location_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_regstore ALTER COLUMN id SET DEFAULT nextval('store_regstore_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_regstore_category ALTER COLUMN id SET DEFAULT nextval('store_regstore_category_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can add permission	2	add_permission
+5	Can change permission	2	change_permission
+6	Can delete permission	2	delete_permission
+7	Can add group	3	add_group
+8	Can change group	3	change_group
+9	Can delete group	3	delete_group
+10	Can add user	4	add_user
+11	Can change user	4	change_user
+12	Can delete user	4	delete_user
+13	Can add content type	5	add_contenttype
+14	Can change content type	5	change_contenttype
+15	Can delete content type	5	delete_contenttype
+16	Can add session	6	add_session
+17	Can change session	6	change_session
+18	Can delete session	6	delete_session
+19	Can add reg store	7	add_regstore
+20	Can change reg store	7	change_regstore
+21	Can delete reg store	7	delete_regstore
+22	Can add category	8	add_category
+23	Can change category	8	change_category
+24	Can delete category	8	delete_category
+28	Can add location	10	add_location
+29	Can change location	10	change_location
+30	Can delete location	10	delete_location
+31	Can add comments	11	add_comments
+32	Can change comments	11	change_comments
+33	Can delete comments	11	delete_comments
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 33, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+37	pbkdf2_sha256$24000$UwTy9xBWF8GD$tpBwOc9C8Rx3ylYnbFSi9waSBLzx5G0zvw8XQTfcIh8=	2016-04-22 06:42:15.527475+00	f	kamalkundu123	kamal	kundu	1@gma.vhg	f	t	2016-04-22 06:41:15.51571+00
+36	pbkdf2_sha256$24000$H4fdn34xk0Ux$d9+PghkGrr9k4R7IliEZdxqFyF3I2fObs3xd80UznFI=	2016-04-26 17:32:01.033991+00	f	neo	neo	k	neo@matrix.com	f	t	2016-04-16 20:26:21.16811+00
+38	pbkdf2_sha256$24000$9AvBDF3sfgY5$iyq811q3Qt2mA0J/vA7ukzgsV57pScRnA5LBjHgzQvc=	2016-04-27 04:07:17.14116+00	f	sapna	test	test	test@yahoo.com	f	t	2016-04-27 04:01:56.62023+00
+1	pbkdf2_sha256$24000$JN7RtVTYHLea$Zq3DIauc7NWB9W3M0g5Q4u9UI8Tuc7/LvO0e3fO3rRM=	2016-04-27 04:11:21.17778+00	t	neeraj			kansalneeraj9194@gmail.com	t	t	2016-04-05 12:26:57.310071+00
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('auth_user_id_seq', 38, true);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2016-04-05 13:08:01.170674+00	1	Clothing	1	Added.	8	1
+2	2016-04-05 13:08:19.300585+00	2	Men's Clothing	1	Added.	8	1
+3	2016-04-05 13:08:33.952353+00	3	Women's Clothing	1	Added.	8	1
+4	2016-04-05 13:08:45.228307+00	4	Kid's Clothing	1	Added.	8	1
+5	2016-04-05 13:10:31.114234+00	5	Shirts	1	Added.	8	1
+6	2016-04-16 20:25:48.441049+00	35	agentsmithaa	3		4	1
+7	2016-04-16 20:25:54.405721+00	2	neo	3		4	1
+8	2016-04-16 21:53:00.319291+00	1	Location object	1	Added.	\N	1
+9	2016-04-17 19:47:36.129033+00	1	Gupta Ji Ki Dukan	1	Added.	7	1
+10	2016-04-17 19:48:30.463546+00	1	gupdukan	1	Added.	10	1
+11	2016-04-17 20:40:14.392384+00	2	abc	1	Added.	7	1
+12	2016-04-17 21:26:12.561942+00	1	Gupta Ji Ki Dukan	2	Changed main_pic.	7	1
+13	2016-04-18 06:01:28.66588+00	2	abc	2	Changed main_pic.	7	1
+14	2016-04-18 06:09:47.279001+00	1	Gupta Ji Ki Dukan	2	Changed main_pic.	7	1
+15	2016-04-18 06:09:56.507677+00	2	abc	2	No fields changed.	7	1
+16	2016-04-18 06:10:10.483758+00	2	abc	2	Changed main_pic.	7	1
+17	2016-04-18 09:12:23.085562+00	1	Gupta Ji Ki Dukan	2	Changed owner.	7	1
+18	2016-04-18 16:39:13.323134+00	1	Comments object	1	Added.	11	1
+19	2016-04-18 17:10:35.313389+00	2	Comments object	1	Added.	11	1
+20	2016-04-21 16:41:40.123054+00	1	Gupta Ji Ki Dukan	2	Changed category.	7	1
+21	2016-04-21 18:13:56.697985+00	2	abc	2	Changed category.	7	1
+22	2016-04-24 18:29:27.801854+00	3	Gupta & Sons	1	Added.	7	1
+23	2016-04-24 18:31:10.525966+00	2	abc	3		7	1
+24	2016-04-24 18:36:06.136731+00	6	Ethnic Wear	1	Added.	8	1
+25	2016-04-24 18:36:38.763247+00	7	Western Wear	1	Added.	8	1
+26	2016-04-24 18:36:41.985377+00	7	Western Wear	2	No fields changed.	8	1
+27	2016-04-24 18:37:00.784869+00	8	Designer Wear	1	Added.	8	1
+28	2016-04-24 18:39:07.023588+00	9	Casual Wear	1	Added.	8	1
+29	2016-04-24 18:39:26.848558+00	10	Formal Wear	1	Added.	8	1
+30	2016-04-24 18:40:33.852071+00	11	Mens Ethnic Wear	1	Added.	8	1
+31	2016-04-24 18:46:03.154702+00	12	Kids Boy	1	Added.	8	1
+32	2016-04-24 18:46:13.639906+00	13	Kids Girl	1	Added.	8	1
+33	2016-04-24 18:46:28.265+00	14	Baby Boy	1	Added.	8	1
+34	2016-04-24 18:46:38.024854+00	15	Baby Girl	1	Added.	8	1
+35	2016-04-24 18:51:11.141899+00	16	Accessories	1	Added.	8	1
+36	2016-04-24 18:52:37.971938+00	17	Jwellery	1	Added.	8	1
+37	2016-04-24 18:53:52.050589+00	18	Handbags & Clutches	1	Added.	8	1
+38	2016-04-24 18:54:19.823778+00	19	Bagpack	1	Added.	8	1
+39	2016-04-24 18:54:31.108346+00	20	Eye Wear	1	Added.	8	1
+40	2016-04-24 19:01:45.968903+00	4	Metro Shoes	1	Added.	7	1
+41	2016-04-24 19:05:52.128193+00	5	Queens	1	Added.	7	1
+42	2016-04-24 19:08:18.074203+00	6	MeenaBazzar	1	Added.	7	1
+43	2016-04-24 19:10:47.803993+00	7	NIKE	1	Added.	7	1
+44	2016-04-24 19:14:14.45872+00	8	Shop No 12	1	Added.	7	1
+45	2016-04-24 19:16:06.682914+00	9	The Hat House	1	Added.	7	1
+46	2016-04-25 20:14:32.734057+00	19	Backpack	2	Changed cat_title and slug.	8	1
+47	2016-04-25 20:15:01.13376+00	5	Queens	2	Changed category.	7	1
+48	2016-04-26 20:02:36.014531+00	1	Gupta Ji Ki Dukan	2	Changed city.	7	1
+49	2016-04-26 20:02:44.318613+00	3	Gupta & Sons	2	Changed city.	7	1
+50	2016-04-26 20:02:53.004416+00	9	The Hat House	2	Changed city.	7	1
+51	2016-04-26 20:03:01.032067+00	7	NIKE	2	Changed city.	7	1
+52	2016-04-26 20:06:41.399421+00	10	gupta mumbai wale	1	Added.	7	1
+53	2016-04-26 20:19:52.185766+00	10	Gupta Mumbai Wale	2	Changed name.	7	1
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 53, true);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	contenttypes	contenttype
+6	sessions	session
+7	store	regstore
+8	store	category
+10	store	location
+11	store	comments
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 11, true);
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2016-02-16 14:21:48.589563+00
+2	auth	0001_initial	2016-02-16 14:21:49.567573+00
+3	admin	0001_initial	2016-02-16 14:21:49.812075+00
+4	admin	0002_logentry_remove_auto_add	2016-02-16 14:21:49.88997+00
+5	contenttypes	0002_remove_content_type_name	2016-02-16 14:21:49.946663+00
+6	auth	0002_alter_permission_name_max_length	2016-02-16 14:21:49.990363+00
+7	auth	0003_alter_user_email_max_length	2016-02-16 14:21:50.02456+00
+8	auth	0004_alter_user_username_opts	2016-02-16 14:21:50.054204+00
+9	auth	0005_alter_user_last_login_null	2016-02-16 14:21:50.090121+00
+10	auth	0006_require_contenttypes_0002	2016-02-16 14:21:50.104291+00
+11	auth	0007_alter_validators_add_error_messages	2016-02-16 14:21:50.134207+00
+12	sessions	0001_initial	2016-02-16 14:21:50.366941+00
+13	userlogin	0001_initial	2016-02-16 14:21:50.482287+00
+14	userlogin	0002_auto_20160216_1808	2016-02-16 18:11:10.676261+00
+15	userlogin	0003_auto_20160219_1748	2016-02-19 17:48:29.966033+00
+16	userlogin	0004_auto_20160219_2016	2016-02-19 20:16:32.839585+00
+17	userlogin	0005_auto_20160220_1802	2016-02-20 18:03:00.814325+00
+18	product	0001_initial	2016-02-23 10:52:08.743923+00
+19	product	0002_product_slug	2016-03-23 13:47:22.706396+00
+20	userlogin	0006_delete_reguser	2016-03-23 13:47:22.861761+00
+22	userlogin	0007_person	2016-04-01 11:10:44.228663+00
+23	userlogin	0008_auto_20160401_1112	2016-04-01 11:12:10.02951+00
+25	userlogin	0009_delete_person	2016-04-05 07:32:11.030453+00
+27	store	0001_initial	2016-04-05 12:25:25.714857+00
+28	store	0002_remove_regstore_city	2016-04-05 12:52:36.385289+00
+29	store	0003_remove_category_parent_category	2016-04-05 12:52:36.406071+00
+30	store	0004_remove_regstore_category	2016-04-05 12:52:36.41739+00
+31	store	0005_auto_20160405_1250	2016-04-05 12:52:36.428409+00
+32	store	0006_category_regstore	2016-04-05 12:54:18.642571+00
+33	store	0007_regstore_city	2016-04-05 12:56:11.768298+00
+34	store	0008_category_parent_category	2016-04-05 12:56:31.616391+00
+35	store	0009_regstore_category	2016-04-05 13:00:11.355234+00
+36	store	0010_location	2016-04-16 21:51:49.811485+00
+37	store	0002_location	2016-04-17 05:08:32.905088+00
+38	store	0003_regstore_main_pic	2016-04-17 21:21:19.994799+00
+39	store	0004_auto_20160418_0911	2016-04-18 09:11:48.782025+00
+40	store	0005_comments	2016-04-18 16:17:18.446069+00
+41	store	0006_comments_store	2016-04-18 16:38:04.643997+00
+42	store	0007_auto_20160418_1709	2016-04-18 17:09:58.514248+00
+43	store	0008_comments_created	2016-04-18 17:56:26.771316+00
+44	store	0009_remove_comments_created	2016-04-18 17:56:26.906137+00
+45	store	0010_comments_created	2016-04-18 17:59:53.789932+00
+46	store	0011_auto_20160418_2125	2016-04-18 21:25:38.462951+00
+47	store	0012_auto_20160421_1640	2016-04-21 16:41:10.12569+00
+48	store	0013_auto_20160426_1952	2016-04-26 19:52:46.534851+00
+49	store	0014_auto_20160426_1953	2016-04-26 19:53:12.101116+00
+\.
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('django_migrations_id_seq', 49, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY django_session (session_key, session_data, expire_date) FROM stdin;
+6ot7gu8o5ixmtsakx5o6w0zombbpmrkl	NzM3YzMyOTM4ODU2ZmEwOGFhMGFkMWQyODk3ZjlmMjJkNGExNGRhMjp7Il9hdXRoX3VzZXJfaGFzaCI6ImM5YjhmM2NiMTlkZDg2ODhlMjUzOTRjM2I3ZjliNWE5MWVkZDMzM2UiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=	2016-05-11 04:11:21.237043+00
+\.
+
+
+--
+-- Data for Name: product_product; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY product_product (id, name, price, prod_id, pic_id, specification, slug) FROM stdin;
+\.
+
+
+--
+-- Name: product_product_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('product_product_id_seq', 2, true);
+
+
+--
+-- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY spatial_ref_sys  FROM stdin;
+\.
+
+
+--
+-- Data for Name: store_category; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY store_category (id, cat_title, slug, parent_category_id) FROM stdin;
+1	Clothing	clothing	\N
+2	Men's Clothing	mens-clothing	1
+3	Women's Clothing	womens-clothing	1
+4	Kid's Clothing	kids-clothing	1
+5	Shirts	shirts	2
+6	Ethnic Wear	ethnic-wear	3
+7	Western Wear	western-wear	3
+8	Designer Wear	designer-wear	3
+9	Casual Wear	casual-wear	2
+10	Formal Wear	formal-wear	2
+11	Mens Ethnic Wear	mens-ethnic-wear	2
+12	Kids Boy	kids-boy	4
+13	Kids Girl	kids-girl	4
+14	Baby Boy	baby-boy	4
+15	Baby Girl	baby-girl	4
+16	Accessories	accessories	\N
+17	Jwellery	jwellery	16
+18	Handbags & Clutches	handbags-clutches	16
+20	Eye Wear	eye-wear	16
+19	Backpack	backpack	16
+\.
+
+
+--
+-- Name: store_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('store_category_id_seq', 20, true);
+
+
+--
+-- Data for Name: store_comments; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY store_comments (id, comment, ratings, user_id, store_id, created) FROM stdin;
+1	hello shop is verrrrryyyyyy baaaaddd and so is owner	1	36	1	2016-04-18 17:59:46.539711+00
+2	yuppieee!!	4	1	1	2016-04-18 17:59:46.539711+00
+3	abcd	2	1	1	2016-04-18 17:59:46.539711+00
+4	verry badddd	5	1	1	2016-04-18 18:06:22.80479+00
+5	ksnkjsk	5	1	1	2016-04-22 05:40:02.119618+00
+6	this shop sucks balls!!!!!! Yo I have a gf now!!!	10	1	1	2016-04-22 06:31:38.105928+00
+7	i am kundu and i am chu******	5	37	1	2016-04-22 06:43:40.186272+00
+8	jhjh	10	1	1	2016-04-26 18:01:14.083897+00
+9	verry good	9	1	3	2016-04-26 18:04:31.463489+00
+10	verry bad	2	1	3	2016-04-26 18:07:56.828283+00
+11	hello	8	1	3	2016-04-26 18:08:08.596412+00
+12	hello	8	1	3	2016-04-26 18:11:15.820366+00
+13	superb	5	1	3	2016-04-26 18:49:53.364623+00
+14	xZXZxZxz	4	38	4	2016-04-27 04:05:05.781438+00
+15	xzCcccccccccccccc	5	38	4	2016-04-27 04:06:16.767675+00
+16	xszbxnsbacx	6	1	10	2016-04-27 04:18:47.000702+00
+\.
+
+
+--
+-- Name: store_comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('store_comments_id_seq', 16, true);
+
+
+--
+-- Data for Name: store_location; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY store_location (id, loc_name, point, store_id) FROM stdin;
+1	gupdukan	0101000020E6100000E1FFFFBFD94353400900008097AD3C40	1
+\.
+
+
+--
+-- Name: store_location_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('store_location_id_seq', 1, true);
+
+
+--
+-- Data for Name: store_regstore; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY store_regstore (id, name, "desc", storeslug, date_added, address, phone_number, city, main_pic, owner) FROM stdin;
+4	Metro Shoes	Metro Shoes	metro-shoes	2016-04-24 19:01:45.961659+00	56,Karol Bagh	9276252522	DEL	static/store_img/7squirtle1600x12001.jpg	Vipin
+6	MeenaBazzar	Opening Soon...........	meenabazzar	2016-04-24 19:08:18.063827+00	Shop No 74,MeenaBazzar, Pitampura	9181617151	DEL	static/store_img/deal5.jpg	Meena
+8	Shop No 12	Shop No 12	shop-no-12	2016-04-24 19:14:14.446544+00	Shop No 12,Kamla Nagar	9282625625	DEL	static/store_img/deal7.jpg	Sonu
+5	Queens	Queens,Kamla Nagar	queens	2016-04-24 19:05:52.121977+00	Kamla Nagar		DEL	static/store_img/deal4.jpg	Rani
+1	Gupta Ji Ki Dukan	Gupta ji ki Dukan, , incorporated on September 8, 1969, is engaged in the design, development and citywide marketing and selling of footwear, apparel, equipment, accessories and services.	gupta-ji-ki-dukan	2016-04-17 19:47:35.849338+00	shop no 42, Karol Bagh, near metro pillar no 564	9917147714	delhi	static/store_img/pica.jpg	Nikhil Gupta
+3	Gupta & Sons	gupta and sons	gupta-sons	2016-04-24 18:29:27.544462+00	Shop No. 1243,Kamla Nagar	9863536353	delhi	static/store_img/Captain-America-Civil-War-Wallpaper-YxXOK.jpg	Kapil
+9	The Hat House	All Types of Caps and Hats	hat-house	2016-04-24 19:16:06.675625+00	Shop no 77, Kamla Nagar		mumbai	static/store_img/deal8.jpg	Jaspreet
+7	NIKE	Nike, Shop no. 45, opp. Adidas :p , Karol Bagh	nike	2016-04-24 19:10:47.7968+00	Nike, Shop no. 45, opp. Adidas :p , Karol Bagh	9876554321	delhi	static/store_img/deal6.jpg	Nikky
+10	Gupta Mumbai Wale	gupta mumbai wale	gupta-mumbai-wale	2016-04-26 20:06:41.358614+00	234, marine drive	9877665544	mumbai	static/store_img/bulbasaur_pokemon_drawing_93573_3840x2400.jpg	gupta
+\.
+
+
+--
+-- Data for Name: store_regstore_category; Type: TABLE DATA; Schema: public; Owner: neeraj
+--
+
+COPY store_regstore_category (id, regstore_id, category_id) FROM stdin;
+1	1	1
+2	1	2
+3	1	3
+4	1	5
+6	3	1
+7	3	2
+8	3	3
+9	3	4
+10	3	5
+11	4	1
+12	5	19
+13	6	16
+14	6	17
+15	6	18
+16	6	3
+17	6	6
+18	7	16
+19	8	1
+20	8	2
+21	8	3
+22	8	4
+23	8	5
+24	8	6
+25	8	7
+26	8	8
+27	8	9
+28	8	10
+29	8	11
+30	8	16
+31	8	19
+32	8	20
+33	9	16
+34	5	18
+35	10	1
+36	10	2
+37	10	3
+38	10	4
+39	10	5
+40	10	6
+41	10	10
+42	10	11
+43	10	12
+44	10	13
+45	10	14
+46	10	15
+\.
+
+
+--
+-- Name: store_regstore_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('store_regstore_category_id_seq', 46, true);
+
+
+--
+-- Name: store_regstore_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neeraj
+--
+
+SELECT pg_catalog.setval('store_regstore_id_seq', 10, true);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: product_product_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY product_product
+    ADD CONSTRAINT product_product_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_product_slug_key; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY product_product
+    ADD CONSTRAINT product_product_slug_key UNIQUE (slug);
+
+
+--
+-- Name: store_category_cat_title_key; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_category
+    ADD CONSTRAINT store_category_cat_title_key UNIQUE (cat_title);
+
+
+--
+-- Name: store_category_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_category
+    ADD CONSTRAINT store_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_category_slug_key; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_category
+    ADD CONSTRAINT store_category_slug_key UNIQUE (slug);
+
+
+--
+-- Name: store_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_comments
+    ADD CONSTRAINT store_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_location_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_location
+    ADD CONSTRAINT store_location_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_regstore_category_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_regstore_category
+    ADD CONSTRAINT store_regstore_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_regstore_category_regstore_id_65bba3de_uniq; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_regstore_category
+    ADD CONSTRAINT store_regstore_category_regstore_id_65bba3de_uniq UNIQUE (regstore_id, category_id);
+
+
+--
+-- Name: store_regstore_name_key; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_regstore
+    ADD CONSTRAINT store_regstore_name_key UNIQUE (name);
+
+
+--
+-- Name: store_regstore_pkey; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_regstore
+    ADD CONSTRAINT store_regstore_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_regstore_storeslug_key; Type: CONSTRAINT; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+ALTER TABLE ONLY store_regstore
+    ADD CONSTRAINT store_regstore_storeslug_key UNIQUE (storeslug);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_0e939a4f ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_e8701ad4 ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_8373b171 ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: store_category_2263e5df; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_category_2263e5df ON store_category USING btree (parent_category_id);
+
+
+--
+-- Name: store_category_cat_title_d2a6272b_like; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_category_cat_title_d2a6272b_like ON store_category USING btree (cat_title varchar_pattern_ops);
+
+
+--
+-- Name: store_category_slug_2d349264_like; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_category_slug_2d349264_like ON store_category USING btree (slug varchar_pattern_ops);
+
+
+--
+-- Name: store_comments_7473547c; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_comments_7473547c ON store_comments USING btree (store_id);
+
+
+--
+-- Name: store_comments_e8701ad4; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_comments_e8701ad4 ON store_comments USING btree (user_id);
+
+
+--
+-- Name: store_location_7473547c; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_location_7473547c ON store_location USING btree (store_id);
+
+
+--
+-- Name: store_location_point_id; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_location_point_id ON store_location USING gist (point);
+
+
+--
+-- Name: store_regstore_category_5f332502; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_regstore_category_5f332502 ON store_regstore_category USING btree (regstore_id);
+
+
+--
+-- Name: store_regstore_category_b583a629; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_regstore_category_b583a629 ON store_regstore_category USING btree (category_id);
+
+
+--
+-- Name: store_regstore_name_ac43bce1_like; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_regstore_name_ac43bce1_like ON store_regstore USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: store_regstore_storeslug_c9c015a6_like; Type: INDEX; Schema: public; Owner: neeraj; Tablespace: 
+--
+
+CREATE INDEX store_regstore_storeslug_c9c015a6_like ON store_regstore USING btree (storeslug varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_content_type_id_c4bce8eb_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_content_type_id_c4bce8eb_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_category_parent_category_id_224db50b_fk_store_category_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_category
+    ADD CONSTRAINT store_category_parent_category_id_224db50b_fk_store_category_id FOREIGN KEY (parent_category_id) REFERENCES store_category(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_comments_store_id_15f438fd_fk_store_regstore_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_comments
+    ADD CONSTRAINT store_comments_store_id_15f438fd_fk_store_regstore_id FOREIGN KEY (store_id) REFERENCES store_regstore(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_comments_user_id_735a8e7a_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_comments
+    ADD CONSTRAINT store_comments_user_id_735a8e7a_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_location_store_id_11792be0_fk_store_regstore_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_location
+    ADD CONSTRAINT store_location_store_id_11792be0_fk_store_regstore_id FOREIGN KEY (store_id) REFERENCES store_regstore(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_regstore_catego_category_id_8ef6084b_fk_store_category_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_regstore_category
+    ADD CONSTRAINT store_regstore_catego_category_id_8ef6084b_fk_store_category_id FOREIGN KEY (category_id) REFERENCES store_category(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: store_regstore_catego_regstore_id_f9012a3a_fk_store_regstore_id; Type: FK CONSTRAINT; Schema: public; Owner: neeraj
+--
+
+ALTER TABLE ONLY store_regstore_category
+    ADD CONSTRAINT store_regstore_catego_regstore_id_f9012a3a_fk_store_regstore_id FOREIGN KEY (regstore_id) REFERENCES store_regstore(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
