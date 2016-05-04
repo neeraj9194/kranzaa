@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'userlogin',
     'store',
     'senticomment',
-    'django_nvd3',
-    'googlecharts',
+    #'django_nvd3',
+    #'googlecharts',
 ]
 
 MIDDLEWARE_CLASSES = [
